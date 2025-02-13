@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { text } = require("stream/consumers");
 
 const filePath = process.argv;
 const link = filePath[2];
@@ -10,14 +11,18 @@ function checkDuplicatedWords(text) {
   wordsList.forEach((word) => {
     result[word] = (result[word] || 0) + 1;
   });
-  console.log(result);
+  return result;
 }
 
 fs.readFile(link, "utf-8", (_, text) => {
-  checkDuplicatedWords(text);
+  breakIntoParagraphs(text);
+  // checkDuplicatedWords(text);
 });
 
-// {
-//   web: 5,
-//   computador: 4,
-// }
+function breakIntoParagraphs(text) {
+  const paragraphs = text.toLowerCase().split("\n");
+  const counter = paragraphs.map((paragraph) => {
+    return checkDuplicatedWords(paragraph);
+  });
+  console.log(counter);
+}
