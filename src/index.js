@@ -1,28 +1,41 @@
-const fs = require("fs");
-const { text } = require("stream/consumers");
+const fs = require('fs'); 
 
 const filePath = process.argv;
-const link = filePath[2];
+const link = filePath[2]; 
 
-function checkDuplicatedWords(text) {
-  const wordsList = text.split(" ");
-  const result = {};
-  // object[property] = value;
-  wordsList.forEach((word) => {
-    result[word] = (result[word] || 0) + 1;
-  });
-  return result;
-}
-
-fs.readFile(link, "utf-8", (_, text) => {
+fs.readFile(link, 'utf-8', (error, text) => {
+  if (error) {
+    console.error(error); 
+    return;
+  }
   breakIntoParagraphs(text);
-  // checkDuplicatedWords(text);
-});
+  checkDuplicateWords(text);
+})
 
 function breakIntoParagraphs(text) {
-  const paragraphs = text.toLowerCase().split("\n");
-  const counter = paragraphs.map((paragraph) => {
-    return checkDuplicatedWords(paragraph);
-  });
-  console.log(counter);
+  const paragraphs = text.toLowerCase().split('\n');
+  const count = paragraphs.flatMap((paragraph) => {
+    if (!paragraph) return [];
+    return checkDuplicateWords(paragraph);
+  })
+  console.log(count);
+}
+
+// [1, 2, [3, 4]]
+// [1, 2, 3, 4]
+
+function cleanWords(word) {
+  return word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
+}
+
+function checkDuplicateWords(text) {
+  const wordList = text.split(' ');
+  const result = {};
+  wordList.forEach(word => {
+    if (word.length >= 3) {
+      const cleanWord = cleanWords(word);
+      result[cleanWord] = (result[cleanWord] || 0) + 1
+    }
+  })
+  return result;
 }
