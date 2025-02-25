@@ -21,9 +21,6 @@ function breakIntoParagraphs(text) {
   console.log(count);
 }
 
-// [1, 2, [3, 4]]
-// [1, 2, 3, 4]
-
 function cleanWords(word) {
   return word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
 }
