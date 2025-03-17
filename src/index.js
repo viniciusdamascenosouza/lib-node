@@ -2,18 +2,19 @@ const fs = require("fs");
 
 const filePath = process.argv[2];
 
-fs.readFile(filePath, "utf-8", (error, text) => {
-  if (error) {
-    if (error.code === "ENOENT") {
-      console.log("File not found.");
-    } else {
-      console.log("An error occurred while reading the file.");
-    }
-    return;
-  }
 
-  countsWords(text);
+
+fs.readFile(filePath, "utf-8", (error, text) => {
+  try {
+    if (error) throw error;
+    countsWords(text);
+  } catch (error) {
+    if (error.code === "ENOENT") console.log("expected error");
+    else console.log("another error");
+  }
 });
+
+
 
 function countsWords(text) {
   const paragraphs = extractParagraphs(text);
