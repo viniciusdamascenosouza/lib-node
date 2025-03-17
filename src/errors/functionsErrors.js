@@ -4,4 +4,4 @@ function handlesErrors(error) {
   } else "Error in aplication";
 }
 
-module.exports = { handlesErrors };
+export default handlesErrors;
