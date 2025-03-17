@@ -1,7 +1,7 @@
 export function countsWords(text) {
   const paragraphs = extractParagraphs(text);
   const count = checkDuplicateWords(paragraphs);
-  console.log(count);
+  return count;
 }
 
 function extractParagraphs(text) {
