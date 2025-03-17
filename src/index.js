@@ -1,20 +1,16 @@
 const fs = require("fs");
+const handlesErrors = require("./errors/functionsErrors");
 
 const filePath = process.argv[2];
-
-
 
 fs.readFile(filePath, "utf-8", (error, text) => {
   try {
     if (error) throw error;
     countsWords(text);
   } catch (error) {
-    if (error.code === "ENOENT") console.log("expected error");
-    else console.log("another error");
+    handlesErrors(error);
   }
 });
-
-
 
 function countsWords(text) {
   const paragraphs = extractParagraphs(text);
