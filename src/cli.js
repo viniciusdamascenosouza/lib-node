@@ -11,6 +11,7 @@ fs.readFile(link, "utf-8", (error, text) => {
     if (error) throw error;
     const result = countsWords(text);
     createAndSaveFile(result, address);
+    // createAndSaveFileTwo(result, address);
   } catch (error) {
     handlesErrors(error);
   }
@@ -25,4 +26,20 @@ async function createAndSaveFile(listWords, address) {
   } catch (error) {
     throw error;
   }
+}
+
+function createAndSaveFileTwo(listWords, address) {
+  const newFile = `${address}/result.txt`;
+  const textWords = JSON.stringify(listWords);
+  fs.promises
+    .writeFile(newFile, textWords)
+    .then(() => {
+      console.log("file created");
+    })
+    .catch((error) => {
+      throw error;
+    })
+    .finally(() => {
+      console.log("Process finished");
+    });
 }
